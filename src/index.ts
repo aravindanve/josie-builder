@@ -313,7 +313,7 @@ class Builder {
       const propertyMap = this._schema.properties;
       const propertyNames = Object.keys(this._schema.properties);
 
-      required = required.concat(required, propertyNames.filter(name =>
+      required = required.concat(propertyNames.filter(name =>
         propertyMap[name] instanceof Builder &&
         (propertyMap[name] as Builder)._required));
     }
