@@ -2,7 +2,7 @@ import 'mocha';
 import { expect } from 'chai';
 import josie from '../src';
 
-const a: Josie.SchemaType = 'string';
+const a: JosieBuilder.SchemaType = 'string';
 
 describe('josie()', () => {
   it('must be a function', () => {
@@ -229,7 +229,7 @@ describe('josie validation keywords', () => {
       qualification: josie.required(),
       interests: josie.required(false)
 
-    }).toJSON() as Josie.SchemaObject).required).to.deep.eq([
+    }).toJSON() as JosieBuilder.SchemaObject).required).to.deep.eq([
       'name',
       'age',
       'qualification'
@@ -432,8 +432,8 @@ describe('josie quick methods', () => {
 });
 
 declare global {
-  interface JosieCustom {
-    email(): Josie;
+  interface JosieBuilderStatic {
+    email(): JosieBuilder;
   }
 }
 

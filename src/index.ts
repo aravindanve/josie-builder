@@ -1,12 +1,12 @@
 // global types
 declare global {
-  interface JosieCustom {
+  interface JosieBuilderStatic {
     // for extending the library
   }
 
-  interface Josie extends Builder { }
+  interface JosieBuilder extends Builder { }
 
-  namespace Josie {
+  namespace JosieBuilder {
     export type SchemaType = 'null' | 'boolean' | 'number' | 'integer' | 'string' | 'array' | 'object';
     export type Schema<T = SchemaObject<T>> = boolean | T | SchemaObject<T>;
     export type List<T> = [T, ...T[]];
@@ -89,17 +89,17 @@ type ParametersOf<T> = T extends (...args: infer T) => any ? T : never;
 
 // builder class
 class Builder {
-  private _schema: Josie.SchemaObject<Builder>;
+  private _schema: JosieBuilder.SchemaObject<Builder>;
   private _required = false;
-  private _cache: Josie.SchemaObject | undefined;
+  private _cache: JosieBuilder.SchemaObject | undefined;
 
-  constructor(schema: Josie.SchemaObjectLike = {}) {
+  constructor(schema: JosieBuilder.SchemaObjectLike = {}) {
     this._schema = schema instanceof Builder
       ? schema._schema
       : schema;
   }
 
-  concat(...schemas: Josie.List<Josie.SchemaObjectLike>) {
+  concat(...schemas: JosieBuilder.List<JosieBuilder.SchemaObjectLike>) {
     return new Builder(
       (Object as any).assign({}, this._schema,
         ...schemas.map(schema => schema instanceof Builder
@@ -139,15 +139,15 @@ class Builder {
     return this.$$chain('examples', value);
   }
 
-  definitions(value: Josie.PropertyMap<Josie.SchemaLike>) {
+  definitions(value: JosieBuilder.PropertyMap<JosieBuilder.SchemaLike>) {
     return this.$$chain('definitions', value);
   }
 
-  type(value: Josie.SchemaType | Josie.List<Josie.SchemaType>) {
+  type(value: JosieBuilder.SchemaType | JosieBuilder.List<JosieBuilder.SchemaType>) {
     return this.$$chain('type', value);
   }
 
-  enum(value: Josie.List<any>) {
+  enum(value: JosieBuilder.List<any>) {
     return this.$$chain('enum', value);
   }
 
@@ -191,11 +191,11 @@ class Builder {
         : value);
   }
 
-  additionalItems(value: Josie.SchemaLike) {
+  additionalItems(value: JosieBuilder.SchemaLike) {
     return this.$$chain('additionalItems', value);
   }
 
-  items(value: Josie.SchemaLike | Josie.List<Josie.SchemaLike>) {
+  items(value: JosieBuilder.SchemaLike | JosieBuilder.List<JosieBuilder.SchemaLike>) {
     return this.$$chain('items', value);
   }
 
@@ -211,7 +211,7 @@ class Builder {
     return this.$$chain('uniqueItems', value);
   }
 
-  contains(value: Josie.SchemaLike) {
+  contains(value: JosieBuilder.SchemaLike) {
     return this.$$chain('contains', value);
   }
 
@@ -231,23 +231,23 @@ class Builder {
     return instance;
   }
 
-  additionalProperties(value: Josie.SchemaLike) {
+  additionalProperties(value: JosieBuilder.SchemaLike) {
     return this.$$chain('additionalProperties', value);
   }
 
-  properties(value: Josie.PropertyMap<Josie.SchemaLike>) {
+  properties(value: JosieBuilder.PropertyMap<JosieBuilder.SchemaLike>) {
     return this.$$chain('properties', value);
   }
 
-  patternProperties(value: Josie.PropertyMap<Josie.SchemaLike>) {
+  patternProperties(value: JosieBuilder.PropertyMap<JosieBuilder.SchemaLike>) {
     return this.$$chain('patternProperties', value);
   }
 
-  dependencies(value: Josie.PropertyDependencies<Josie.SchemaLike>) {
+  dependencies(value: JosieBuilder.PropertyDependencies<JosieBuilder.SchemaLike>) {
     return this.$$chain('dependencies', value);
   }
 
-  propertyNames(value: Josie.SchemaLike) {
+  propertyNames(value: JosieBuilder.SchemaLike) {
     return this.$$chain('propertyNames', value);
   }
 
@@ -264,9 +264,9 @@ class Builder {
   }
 
   if(
-    condition: Josie.SchemaLike,
-    thenClause?: Josie.SchemaLike | null,
-    elseClause?: Josie.SchemaLike | null
+    condition: JosieBuilder.SchemaLike,
+    thenClause?: JosieBuilder.SchemaLike | null,
+    elseClause?: JosieBuilder.SchemaLike | null
   ) {
     let chain = this.$$chain('if', condition) as Builder;
 
@@ -283,19 +283,19 @@ class Builder {
     return chain;
   }
 
-  allOf(value: Josie.List<Josie.SchemaLike>) {
+  allOf(value: JosieBuilder.List<JosieBuilder.SchemaLike>) {
     return this.$$chain('allOf', value);
   }
 
-  anyOf(value: Josie.List<Josie.SchemaLike>) {
+  anyOf(value: JosieBuilder.List<JosieBuilder.SchemaLike>) {
     return this.$$chain('anyOf', value);
   }
 
-  oneOf(value: Josie.List<Josie.SchemaLike>) {
+  oneOf(value: JosieBuilder.List<JosieBuilder.SchemaLike>) {
     return this.$$chain('oneOf', value);
   }
 
-  not(value: Josie.SchemaLike) {
+  not(value: JosieBuilder.SchemaLike) {
     return this.$$chain('not', value);
   }
 
@@ -356,12 +356,12 @@ class Builder {
   }
 }
 
-interface BuilderStatic extends MethodsOf<Builder>, JosieCustom {
+interface BuilderStatic extends MethodsOf<Builder>, JosieBuilderStatic {
   Builder: typeof Builder;
 
   (): Builder;
   (schema: boolean): boolean;
-  (schema: Josie.SchemaObjectLike): Builder;
+  (schema: JosieBuilder.SchemaObjectLike): Builder;
 
   null: typeof quickNull;
   boolean: typeof quickBoolean;
@@ -379,7 +379,7 @@ interface BuilderStatic extends MethodsOf<Builder>, JosieCustom {
 };
 
 const builderShared = new Builder();
-const builderStatic: BuilderStatic = (function (schema: Josie.SchemaLike = {}) {
+const builderStatic: BuilderStatic = (function (schema: JosieBuilder.SchemaLike = {}) {
   if (typeof schema === 'boolean') {
     return schema;
 
@@ -444,8 +444,8 @@ function quickNullOrString(format?: string) {
 builderStatic.nullOrString = quickNullOrString;
 
 function quickArray(
-  items?: Josie.SchemaLike | Josie.List<Josie.SchemaLike> | null,
-  additionalItems?: Josie.SchemaLike | null
+  items?: JosieBuilder.SchemaLike | JosieBuilder.List<JosieBuilder.SchemaLike> | null,
+  additionalItems?: JosieBuilder.SchemaLike | null
 ) {
   let chain = builderShared.type('array');
 
@@ -464,8 +464,8 @@ function quickArray(
 builderStatic.array = quickArray;
 
 function quickNullOrArray(
-  items?: Josie.SchemaLike | Josie.List<Josie.SchemaLike> | null,
-  additionalItems?: Josie.SchemaLike | null
+  items?: JosieBuilder.SchemaLike | JosieBuilder.List<JosieBuilder.SchemaLike> | null,
+  additionalItems?: JosieBuilder.SchemaLike | null
 ) {
   let chain = builderShared.type(['null', 'array']);
 
@@ -484,8 +484,8 @@ function quickNullOrArray(
 builderStatic.nullOrArray = quickNullOrArray;
 
 function quickObject(
-  properties?: Josie.PropertyMap<Josie.SchemaLike> | null,
-  additionalProperties?: Josie.SchemaLike | null
+  properties?: JosieBuilder.PropertyMap<JosieBuilder.SchemaLike> | null,
+  additionalProperties?: JosieBuilder.SchemaLike | null
 ) {
   let chain = builderShared.type('object');
 
@@ -504,8 +504,8 @@ function quickObject(
 builderStatic.object = quickObject;
 
 function quickNullOrObject(
-  properties?: Josie.PropertyMap<Josie.SchemaLike> | null,
-  additionalProperties?: Josie.SchemaLike | null
+  properties?: JosieBuilder.PropertyMap<JosieBuilder.SchemaLike> | null,
+  additionalProperties?: JosieBuilder.SchemaLike | null
 ) {
   let chain = builderShared.type(['null', 'object']);
 
