@@ -1,0 +1,54 @@
+{
+  "name": "josie-builder",
+  "version": "0.1.0",
+  "description": "JSON Schema Builder",
+  "main": "lib/index.js",
+  "types": "src/index.ts",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "nyc mocha -r ts-node/register test/**/*.spec.ts",
+    "build": "tsc --project tsconfig.json"
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "exclude": [
+      "**/*.d.ts"
+    ],
+    "include": [
+      "src/**/*.ts"
+    ],
+    "reporter": [
+      "text",
+      "html"
+    ],
+    "all": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aravindanve/josie-builder.git"
+  },
+  "keywords": [
+    "json-schema",
+    "builder",
+    "chaining"
+  ],
+  "author": "Aravindan Ve <aravindan.ve@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aravindanve/josie-builder/issues"
+  },
+  "homepage": "https://github.com/aravindanve/josie-builder#readme",
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.5",
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "nyc": "^13.1.0",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.2.2"
+  }
+}
