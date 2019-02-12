@@ -430,3 +430,17 @@ describe('josie quick methods', () => {
     expect(josie.nullOrString('email').toJSON()).to.deep.eq({ type: ['null', 'string'], format: 'email' });
   });
 });
+
+declare global {
+  interface JosieCustom {
+    email(): Josie;
+  }
+}
+
+describe('josie custom methods', () => {
+  it('must work properly', () => {
+    josie.email = () => josie.string('email');
+
+    expect(josie.email().toJSON()).to.deep.eq({ type: 'string', format: 'email' });
+  });
+});

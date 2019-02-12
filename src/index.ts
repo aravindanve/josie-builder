@@ -1,5 +1,11 @@
 // global types
 declare global {
+  interface JosieCustom {
+    // for extending the library
+  }
+
+  interface Josie extends Builder { }
+
   namespace Josie {
     export type SchemaType = 'null' | 'boolean' | 'number' | 'integer' | 'string' | 'array' | 'object';
     export type Schema<T = SchemaObject<T>> = boolean | T | SchemaObject<T>;
@@ -350,7 +356,7 @@ class Builder {
   }
 }
 
-declare interface BuilderStatic extends MethodsOf<Builder> {
+interface BuilderStatic extends MethodsOf<Builder>, JosieCustom {
   Builder: typeof Builder;
 
   (): Builder;
