@@ -40,6 +40,9 @@ interface Factory extends MethodsOf<Builder>, JosieBuilderStatic, Helpers {
   (): Builder;
   (schema: boolean): boolean;
   (schema: BuilderOrRawObject): Builder;
+
+  addMethod: typeof addMethod;
+  removeMethod: typeof removeMethod;
 };
 
 // factory method
@@ -71,6 +74,30 @@ for (let i = 0, keys = Object.keys(Builder.prototype); i < keys.length; i++) {
 
 // expose helpers
 (Object as any).assign(factory, helpers);
+
+// allow custom factory methods
+const customMethods: string[] = [];
+function addMethod(name: string, fn: Function) {
+  if (name in factory) {
+    throw new Error(
+      `Method by name '${name}' already exists`);
+  }
+  if (customMethods.indexOf(name) === -1) {
+    customMethods.push(name);
+  }
+  factory[name] = fn;
+}
+factory.addMethod = addMethod;
+
+function removeMethod(name) {
+  const index = customMethods.indexOf(name);
+
+  if (index !== -1) {
+    customMethods.splice(index, 1);
+    delete factory[name];
+  }
+}
+factory.removeMethod = removeMethod;
 
 // export factory
 export = factory;

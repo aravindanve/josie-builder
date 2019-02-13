@@ -483,9 +483,24 @@ declare global {
 
 describe('josie custom', () => {
   it('must be able to add custom static methods', () => {
-    josie.email = () => josie.string('email');
+    josie.addMethod('email', () => josie.string('email'));
 
     expect(josie.email().toJSON()).to.deep.eq({ type: 'string', format: 'email' });
+  });
+
+  it('must not be able to add duplicate custom static methods', () => {
+    expect(() => josie.addMethod('email', () => josie.string('email'))).to.throw();
+    expect(() => josie.addMethod('string', () => josie.object())).to.throw();
+  });
+
+  it('must be able to remove custom static methods', () => {
+    josie.removeMethod('email');
+
+    expect(josie.email).to.eq(undefined);
+  });
+
+  it('must be able to remove undefined custom static methods', () => {
+    josie.removeMethod('random');
   });
 
   it('must be able to add custom keywords', () => {

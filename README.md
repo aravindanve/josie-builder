@@ -94,6 +94,7 @@ const schema: JosieBuilder.Schema = {
 
 Custom Static Methods:
 ```ts
+// define custom method type
 declare global {
   interface JosieBuilderStatic {
     email(): JosieBuilder;
@@ -101,7 +102,7 @@ declare global {
 }
 
 // define custom method
-josie.email = () => josie.string('email');
+josie.addMethod('email', () => josie.string('email'));
 
 // use custom method
 const schema = josie.object({
