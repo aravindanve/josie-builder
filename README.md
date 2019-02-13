@@ -12,7 +12,7 @@ npm i -S josie-builder
 
 Basic Usage:
 ```ts
-import * as josie from 'josie-builder';
+import josie from 'josie-builder';
 
 const person = josie.object({
   name: josie.string().required(),
@@ -69,6 +69,44 @@ const personSchema = person.toJSON();
     "email"
   ]
 }
+```
+
+### Keywords Support:
+
+All keywords as of [JSON Schema Draft 7](http://json-schema.org/specification-links.html#draft-7) are supported.
+
+### Custom Methods Usage:
+
+Custom Keywords (Type Only):
+```ts
+declare global {
+  interface JosieSchemaObject {
+    customKeyword?: string;
+  }
+}
+
+const schema: JosieBuilder.Schema = {
+  $id: '#foo',
+  customKeyword: 'my-value'
+};
+```
+
+Custom Static Methods:
+```ts
+declare global {
+  interface JosieBuilderStatic {
+    email(): JosieBuilder;
+  }
+}
+
+// define custom method
+josie.email = () => josie.string('email');
+
+// use custom method
+const schema = josie.object({
+  name: josie.string(),
+  email: josie.email()
+});
 ```
 
 ## Tests

@@ -1,7 +1,11 @@
 // global types
 declare global {
   interface JosieBuilderStatic {
-    // for extending the library
+    // NOTE: extend this interface to add custom methods
+  }
+
+  interface JosieSchemaObject {
+    // NOTE: extend this interface to add custom keywords
   }
 
   interface JosieBuilder extends Builder { }
@@ -21,7 +25,7 @@ declare global {
       [propertyName: string]: T;
     }
 
-    export interface SchemaObject<T = Schema<T>> {
+    export interface SchemaObject<T = Schema<T>> extends JosieSchemaObject {
       $schema?: string;
       $id?: string;
       $ref?: string;

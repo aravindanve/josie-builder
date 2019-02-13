@@ -2,8 +2,6 @@ import 'mocha';
 import { expect } from 'chai';
 import josie from '../src';
 
-const a: JosieBuilder.SchemaType = 'string';
-
 describe('josie()', () => {
   it('must be a function', () => {
     expect(josie).to.be.a('function');
@@ -475,12 +473,22 @@ declare global {
   interface JosieBuilderStatic {
     email(): JosieBuilder;
   }
+
+  interface JosieSchemaObject {
+    myKeyword?: string;
+  }
 }
 
-describe('josie custom methods', () => {
-  it('must work properly', () => {
+describe('josie custom', () => {
+  it('must be able to add custom static methods', () => {
     josie.email = () => josie.string('email');
 
     expect(josie.email().toJSON()).to.deep.eq({ type: 'string', format: 'email' });
+  });
+
+  it('must be able to add custom keywords', () => {
+    const schema: JosieBuilder.SchemaObject = {
+      myKeyword: 'this is a string'
+    };
   });
 });
