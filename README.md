@@ -12,7 +12,7 @@ npm i -S josie-builder
 
 Basic Usage:
 ```ts
-import josie from 'josie-builder';
+import * as josie from 'josie-builder';
 
 const person = josie.object({
   name: josie.string().required(),
@@ -24,10 +24,11 @@ const person = josie.object({
   }))
 });
 
-const personSchema = person.toJSON();
+// compiles and outputs serializable object
+person.toJSON();
 ```
 
-`personSchema` looks like this:
+Generated Schema Output:
 ```json
 {
   "type": "object",

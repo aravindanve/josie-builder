@@ -1,6 +1,8 @@
 import 'mocha';
 import { expect } from 'chai';
-import josie from '../src';
+import { Builder } from '../src/Builder';
+
+import josie = require('../src');
 
 describe('josie()', () => {
   it('must be a function', () => {
@@ -8,9 +10,9 @@ describe('josie()', () => {
   });
 
   it('josie() must return an instance of the Builder', () => {
-    expect(josie()).to.be.an.instanceOf(josie.Builder);
-    expect(josie({})).to.be.an.instanceOf(josie.Builder);
-    expect(josie(josie())).to.be.an.instanceOf(josie.Builder);
+    expect(josie()).to.be.an.instanceOf(Builder);
+    expect(josie({})).to.be.an.instanceOf(Builder);
+    expect(josie(josie())).to.be.an.instanceOf(Builder);
   });
 
   it('josie(boolean) argument must return a boolean value', () => {
@@ -38,15 +40,15 @@ describe('josie.concat()', () => {
 
 describe('josie.Builder.toJSON()', () => {
   it('must convert values to json properly', () => {
-    expect(josie.Builder.toJSON(undefined)).to.eq(undefined);
-    expect(josie.Builder.toJSON(null)).to.eq(null);
-    expect(josie.Builder.toJSON(true)).to.eq(true);
-    expect(josie.Builder.toJSON(false)).to.eq(false);
-    expect(josie.Builder.toJSON(245)).to.eq(245);
-    expect(josie.Builder.toJSON('abc')).to.eq('abc');
-    expect(josie.Builder.toJSON([1, 'abc', false])).to.deep.eq([1, 'abc', false]);
-    expect(josie.Builder.toJSON({ name: 'a', age: 235 })).to.deep.eq({ name: 'a', age: 235 });
-    expect(josie.Builder.toJSON(josie.array(josie.string()))).to.deep.eq({
+    expect(Builder.toJSON(undefined)).to.eq(undefined);
+    expect(Builder.toJSON(null)).to.eq(null);
+    expect(Builder.toJSON(true)).to.eq(true);
+    expect(Builder.toJSON(false)).to.eq(false);
+    expect(Builder.toJSON(245)).to.eq(245);
+    expect(Builder.toJSON('abc')).to.eq('abc');
+    expect(Builder.toJSON([1, 'abc', false])).to.deep.eq([1, 'abc', false]);
+    expect(Builder.toJSON({ name: 'a', age: 235 })).to.deep.eq({ name: 'a', age: 235 });
+    expect(Builder.toJSON(josie.array(josie.string()))).to.deep.eq({
       type: 'array',
       items: {
         type: 'string'
@@ -227,7 +229,7 @@ describe('josie validation keywords', () => {
       qualification: josie.required(),
       interests: josie.required(false)
 
-    }).toJSON() as JosieBuilder.SchemaObject).required).to.deep.eq([
+    }).toJSON() as josie.SchemaObjectRaw).required).to.deep.eq([
       'name',
       'age',
       'qualification'
@@ -471,7 +473,7 @@ describe('josie quick methods', () => {
 
 declare global {
   interface JosieBuilderStatic {
-    email(): JosieBuilder;
+    email(): Builder;
   }
 
   interface JosieSchemaObject {
@@ -487,7 +489,7 @@ describe('josie custom', () => {
   });
 
   it('must be able to add custom keywords', () => {
-    const schema: JosieBuilder.SchemaObject = {
+    const schema: josie.SchemaObjectRaw = {
       myKeyword: 'this is a string'
     };
   });
