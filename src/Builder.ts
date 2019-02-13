@@ -186,12 +186,12 @@ export class Builder {
     let chain = this.$$chain('if', condition) as Builder;
 
     if (thenClause !== undefined &&
-      thenClause !== null) {
+        thenClause !== null) {
       chain = chain.$$chain('then', thenClause) as Builder;
     }
 
     if (elseClause !== undefined &&
-      elseClause !== null) {
+        elseClause !== null) {
       chain = chain.$$chain('else', elseClause) as Builder;
     }
 

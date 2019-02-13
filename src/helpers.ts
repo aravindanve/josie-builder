@@ -50,12 +50,12 @@ export const helpers = {
     let chain = builder.type('array');
 
     if (items !== undefined &&
-      items !== null) {
+        items !== null) {
       chain = chain.items(items);
     }
 
     if (additionalItems !== undefined &&
-      additionalItems !== null) {
+        additionalItems !== null) {
       chain = chain.additionalItems(additionalItems);
     }
 
@@ -69,12 +69,12 @@ export const helpers = {
     let chain = builder.type(['null', 'array']);
 
     if (items !== undefined &&
-      items !== null) {
+        items !== null) {
       chain = chain.items(items);
     }
 
     if (additionalItems !== undefined &&
-      additionalItems !== null) {
+        additionalItems !== null) {
       chain = chain.additionalItems(additionalItems);
     }
 
@@ -88,12 +88,12 @@ export const helpers = {
     let chain = builder.type('object');
 
     if (properties !== undefined &&
-      properties !== null) {
+        properties !== null) {
       chain = chain.properties(properties);
     }
 
     if (additionalProperties !== undefined &&
-      additionalProperties !== null) {
+        additionalProperties !== null) {
       chain = chain.additionalProperties(additionalProperties);
     }
 
@@ -107,12 +107,12 @@ export const helpers = {
     let chain = builder.type(['null', 'object']);
 
     if (properties !== undefined &&
-      properties !== null) {
+        properties !== null) {
       chain = chain.properties(properties);
     }
 
     if (additionalProperties !== undefined &&
-      additionalProperties !== null) {
+        additionalProperties !== null) {
       chain = chain.additionalProperties(additionalProperties);
     }
 
