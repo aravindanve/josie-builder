@@ -429,6 +429,46 @@ describe('josie quick methods', () => {
     expect(josie.nullOrString().toJSON()).to.deep.eq({ type: ['null', 'string'] });
     expect(josie.nullOrString('email').toJSON()).to.deep.eq({ type: ['null', 'string'], format: 'email' });
   });
+
+  it('array() must return the correct schema', () => {
+    expect(josie.array().toJSON()).to.deep.eq({ type: 'array' });
+    expect(josie.array(josie.string()).toJSON()).to.deep.eq({ type: 'array', items: { type: 'string' } });
+    expect(josie.array([josie.number()], josie.string()).toJSON()).to.deep.eq({
+      type: 'array',
+      items: [{ type: 'number' }],
+      additionalItems: { type: 'string' }
+    });
+  });
+
+  it('nullOrArray() must return the correct schema', () => {
+    expect(josie.nullOrArray().toJSON()).to.deep.eq({ type: ['null', 'array'] });
+    expect(josie.nullOrArray(josie.string()).toJSON()).to.deep.eq({ type: ['null', 'array'], items: { type: 'string' } });
+    expect(josie.nullOrArray([josie.number()], josie.string()).toJSON()).to.deep.eq({
+      type: ['null', 'array'],
+      items: [{ type: 'number' }],
+      additionalItems: { type: 'string' }
+    });
+  });
+
+  it('object() must return the correct schema', () => {
+    expect(josie.object().toJSON()).to.deep.eq({ type: 'object' });
+    expect(josie.object({ name: josie.string() }).toJSON()).to.deep.eq({ type: 'object', properties: { name: { type: 'string' }} });
+    expect(josie.object({ name: josie.string() }, josie.number()).toJSON()).to.deep.eq({
+      type: 'object',
+      properties: { name: { type: 'string' }},
+      additionalProperties: { type: 'number' }
+    });
+  });
+
+  it('nullOrObject() must return the correct schema', () => {
+    expect(josie.nullOrObject().toJSON()).to.deep.eq({ type: ['null', 'object'] });
+    expect(josie.nullOrObject({ name: josie.string() }).toJSON()).to.deep.eq({ type: ['null', 'object'], properties: { name: { type: 'string' } } });
+    expect(josie.nullOrObject({ name: josie.string() }, josie.number()).toJSON()).to.deep.eq({
+      type: ['null', 'object'],
+      properties: { name: { type: 'string' } },
+      additionalProperties: { type: 'number' }
+    });
+  });
 });
 
 declare global {
