@@ -246,7 +246,7 @@ export class Builder {
   toJSON() {
     if (!this._cache) this.$$compile();
 
-    return this._cache;
+    return this._cache as SchemaObjectRaw;
   }
 
   static toJSON(value: any) {
