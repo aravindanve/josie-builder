@@ -27,6 +27,10 @@ describe('josie()', () => {
   it('josie() must return an empty schema', () => {
     expect(josie().toJSON()).to.deep.eq({});
   });
+
+  it('josie.Builder must expose Builder class', () => {
+    expect(josie(josie.Builder === Builder)).to.be.eq(true);
+  });
 });
 
 describe('josie.concat()', () => {

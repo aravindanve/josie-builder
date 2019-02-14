@@ -43,6 +43,8 @@ interface Factory extends MethodsOf<Builder>, JosieBuilderStatic, Helpers {
 
   addMethod: typeof addMethod;
   removeMethod: typeof removeMethod;
+
+  Builder: typeof Builder;
 };
 
 // factory method
@@ -98,6 +100,9 @@ function removeMethod(name) {
   }
 }
 factory.removeMethod = removeMethod;
+
+// expose Builder
+factory.Builder = Builder;
 
 // export factory
 export = factory;
