@@ -1,8 +1,6 @@
 import 'mocha';
 import { expect } from 'chai';
-import { Builder } from '../src/Builder';
-
-import josie = require('../src');
+import * as josie from 'josie-builder';
 
 describe('josie()', () => {
   it('must be a function', () => {
@@ -10,9 +8,9 @@ describe('josie()', () => {
   });
 
   it('josie() must return an instance of the Builder', () => {
-    expect(josie()).to.be.an.instanceOf(Builder);
-    expect(josie({})).to.be.an.instanceOf(Builder);
-    expect(josie(josie())).to.be.an.instanceOf(Builder);
+    expect(josie()).to.be.an.instanceOf(josie.Builder);
+    expect(josie({})).to.be.an.instanceOf(josie.Builder);
+    expect(josie(josie())).to.be.an.instanceOf(josie.Builder);
   });
 
   it('josie(boolean) argument must return a boolean value', () => {
@@ -29,7 +27,7 @@ describe('josie()', () => {
   });
 
   it('josie.Builder must expose Builder class', () => {
-    expect(josie(josie.Builder === Builder)).to.be.eq(true);
+    expect(josie.Builder === josie()['constructor']).to.be.eq(true);
   });
 });
 
@@ -44,15 +42,15 @@ describe('josie.concat()', () => {
 
 describe('josie.Builder.toJSON()', () => {
   it('must convert values to json properly', () => {
-    expect(Builder.toJSON(undefined)).to.eq(undefined);
-    expect(Builder.toJSON(null)).to.eq(null);
-    expect(Builder.toJSON(true)).to.eq(true);
-    expect(Builder.toJSON(false)).to.eq(false);
-    expect(Builder.toJSON(245)).to.eq(245);
-    expect(Builder.toJSON('abc')).to.eq('abc');
-    expect(Builder.toJSON([1, 'abc', false])).to.deep.eq([1, 'abc', false]);
-    expect(Builder.toJSON({ name: 'a', age: 235 })).to.deep.eq({ name: 'a', age: 235 });
-    expect(Builder.toJSON(josie.array(josie.string()))).to.deep.eq({
+    expect(josie.Builder.toJSON(undefined)).to.eq(undefined);
+    expect(josie.Builder.toJSON(null)).to.eq(null);
+    expect(josie.Builder.toJSON(true)).to.eq(true);
+    expect(josie.Builder.toJSON(false)).to.eq(false);
+    expect(josie.Builder.toJSON(245)).to.eq(245);
+    expect(josie.Builder.toJSON('abc')).to.eq('abc');
+    expect(josie.Builder.toJSON([1, 'abc', false])).to.deep.eq([1, 'abc', false]);
+    expect(josie.Builder.toJSON({ name: 'a', age: 235 })).to.deep.eq({ name: 'a', age: 235 });
+    expect(josie.Builder.toJSON(josie.array(josie.string()))).to.deep.eq({
       type: 'array',
       items: {
         type: 'string'
@@ -62,20 +60,47 @@ describe('josie.Builder.toJSON()', () => {
 });
 
 describe('josie special methods', () => {
-  it('$$compile() must compile cache', () => {
+  it('compile() must compile cache', () => {
     const schema = josie.array(josie.string());
 
     expect(schema['_cache']).to.eq(undefined);
-    schema.$$compile();
+    schema.compile();
     expect(schema['_cache']).to.not.eq(undefined);
   });
 
-  it('$$clean() must clean cache', () => {
+  it('static compile() must compile cache', () => {
     const schema = josie.array(josie.string());
 
-    schema.$$compile();
+    expect(schema['_cache']).to.eq(undefined);
+    josie.compile(schema);
     expect(schema['_cache']).to.not.eq(undefined);
-    schema.$$clean();
+  });
+
+  it('static compile() must throw if argument is not Builder', () => {
+    const schema = {};
+    expect(() => josie[`compile${''}`](schema)).to.throw();
+  });
+
+  it('clean() must clean cache', () => {
+    const schema = josie.array(josie.string());
+
+    schema.compile();
+    expect(schema['_cache']).to.not.eq(undefined);
+    schema.clean();
+    expect(schema['_cache']).to.eq(undefined);
+  });
+
+  it('static clean() must throw if argument is not Builder', () => {
+    const schema = {};
+    expect(() => josie[`clean${''}`](schema)).to.throw();
+  });
+
+  it('static clean() must clean cache', () => {
+    const schema = josie.array(josie.string());
+
+    josie.compile(schema);
+    expect(schema['_cache']).to.not.eq(undefined);
+    josie.clean(schema);
     expect(schema['_cache']).to.eq(undefined);
   });
 
@@ -83,6 +108,12 @@ describe('josie special methods', () => {
     const schema = josie.array(josie.string());
 
     expect(schema.toJSON() === schema.toJSON()).to.eq(true);
+  });
+
+  it('static toJSON() must return from cache once compiled', () => {
+    const schema = josie.array(josie.string());
+
+    expect(josie.toJSON(schema) === josie.toJSON(schema)).to.eq(true);
   });
 });
 
@@ -233,7 +264,7 @@ describe('josie validation keywords', () => {
       qualification: josie.required(),
       interests: josie.required(false)
 
-    }).toJSON() as josie.SchemaObjectRaw).required).to.deep.eq([
+    }).toJSON() as josie.SchemaObject).required).to.deep.eq([
       'name',
       'age',
       'qualification'
@@ -475,12 +506,11 @@ describe('josie quick methods', () => {
   });
 });
 
-declare global {
-  interface JosieBuilderStatic {
-    email(): Builder;
-  }
+// augment module to add custom factory methods and keywords
+declare module 'josie-builder' {
+  export function email(): josie.Builder;
 
-  interface JosieSchemaObject {
+  export interface SchemaCustomKeywords {
     myKeyword?: string;
   }
 }
@@ -508,7 +538,7 @@ describe('josie custom', () => {
   });
 
   it('must be able to add custom keywords', () => {
-    const schema: josie.SchemaObjectRaw = {
+    const schema: josie.SchemaObject = {
       myKeyword: 'this is a string'
     };
   });

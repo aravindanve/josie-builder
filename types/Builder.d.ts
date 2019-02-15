@@ -1,0 +1,55 @@
+import common = require('./common');
+
+declare class Builder {
+  constructor(schema?: Builder | common.SchemaObjectLike<Builder>);
+  static toJSON(value: any): any;
+  toJSON(): common.SchemaObject;
+  chain<T>(keyword: string, value: T): Builder;
+  compile(): common.SchemaObject;
+  clean(): void;
+  concat(...schemas: (Builder | common.SchemaObjectLike<Builder>)[]): Builder;
+  $id(value: string): Builder;
+  $ref(value: string): Builder;
+  $comment(value: string): Builder;
+  title(value: string): Builder;
+  description(value: string): Builder;
+  default(value: any): Builder;
+  readOnly(value: boolean): Builder;
+  examples(value: any[]): Builder;
+  definitions(value: common.SchemaMap<Builder | common.SchemaLike<Builder>>): Builder;
+  type(value: common.SchemaType | common.SchemaType[]): Builder;
+  enum(value: any[]): Builder;
+  const(value: any): Builder;
+  multipleOf(value: number): Builder;
+  maximum(value: number): Builder;
+  exclusiveMaximum(value: number): Builder;
+  minimum(value: number): Builder;
+  exclusiveMinimum(value: number): Builder;
+  maxLength(value: number): Builder;
+  minLength(value: number): Builder;
+  pattern(value: string | RegExp): Builder;
+  additionalItems(value: Builder | common.SchemaLike<Builder>): Builder;
+  items(value: Builder | common.SchemaLike<Builder> | (Builder | common.SchemaLike<Builder>)[]): Builder;
+  maxItems(value: number): Builder;
+  minItems(value: number): Builder;
+  uniqueItems(value: boolean): Builder;
+  contains(value: Builder | common.SchemaLike<Builder>): Builder;
+  maxProperties(value: number): Builder;
+  minProperties(value: number): Builder;
+  required(value?): Builder;
+  additionalProperties(value: Builder | common.SchemaLike<Builder>): Builder;
+  properties(value: common.SchemaMap<Builder | common.SchemaLike<Builder>>): Builder;
+  patternProperties(value: common.SchemaMap<Builder | common.SchemaLike<Builder>>): Builder;
+  dependencies(value: common.SchemaDependencies<Builder | common.SchemaLike<Builder>>): Builder;
+  propertyNames(value: Builder | common.SchemaLike<Builder>): Builder;
+  format(value: string): Builder;
+  contentMediaType(value: string): Builder;
+  contentEncoding(value: string): Builder;
+  if(condition: Builder | common.SchemaLike<Builder>, thenClause?: Builder | common.SchemaLike<Builder> | null, elseClause?: Builder | common.SchemaLike<Builder> | null): Builder;
+  allOf(value: (Builder | common.SchemaLike<Builder>)[]): Builder;
+  anyOf(value: (Builder | common.SchemaLike<Builder>)[]): Builder;
+  oneOf(value: (Builder | common.SchemaLike<Builder>)[]): Builder;
+  not(value: Builder | common.SchemaLike<Builder>): Builder;
+}
+
+export = Builder;

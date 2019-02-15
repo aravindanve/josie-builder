@@ -1,25 +1,26 @@
 {
   "name": "josie-builder",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "JSON Schema Builder",
   "main": "lib/index.js",
-  "types": "src/index.ts",
+  "types": "types/index.d.ts",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "test": "nyc mocha -r ts-node/register test/**/*.spec.ts",
-    "build": "tsc --project tsconfig.json"
+    "test": "TS_NODE_PROJECT=./test/tsconfig.json nyc mocha -r ts-node/register -r tsconfig-paths/register test/**/*.spec.ts",
+    "js-example": "node examples/javascript.js",
+    "ts-example": "ts-node --require tsconfig-paths/register --project examples/tsconfig.json examples/typescript.ts"
   },
   "nyc": {
     "extension": [
-      ".ts"
+      ".js"
     ],
     "exclude": [
       "**/*.d.ts"
     ],
     "include": [
-      "src/**/*.ts"
+      "lib/**/*.js"
     ],
     "reporter": [
       "text",
@@ -49,6 +50,7 @@
     "mocha": "^5.2.0",
     "nyc": "^13.1.0",
     "ts-node": "^7.0.1",
+    "tsconfig-paths": "^3.8.0",
     "typescript": "^3.2.2"
   }
 }

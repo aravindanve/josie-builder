@@ -1,7 +1,6 @@
-export type NonEmptyArray<T> = [T, ...T[]];
 export type SchemaType = 'null' | 'boolean' | 'number' | 'integer' | 'string' | 'array' | 'object';
-export type SchemaLike<T> = boolean | T | SchemaObjectLike<T>;
-export type SchemaRaw = boolean | SchemaObjectRaw;
+export type SchemaLike<T> = boolean | SchemaObjectLike<T>;
+export type Schema = boolean | SchemaObject;
 
 export interface SchemaDependencies<T> {
   [propertyName: string]: T | string[];
@@ -11,7 +10,11 @@ export interface SchemaMap<T> {
   [propertyName: string]: T;
 }
 
-export interface SchemaObjectLike<T> extends JosieSchemaObject {
+export interface SchemaCustomKeywords {
+  // use module augmentation to define custom keywords
+}
+
+export interface SchemaObjectLike<T> extends SchemaCustomKeywords {
   $schema?: string;
   $id?: string;
   $ref?: string;
@@ -24,11 +27,11 @@ export interface SchemaObjectLike<T> extends JosieSchemaObject {
   examples?: any[];
   definitions?: SchemaMap<SchemaLike<T>>;
 
-  type?: SchemaType | NonEmptyArray<SchemaType>;
-  enum?: NonEmptyArray<any>;
+  type?: SchemaType | SchemaType[];
+  enum?: any[];
   const?: any;
 
-  multipeOf?: number;
+  multipleOf?: number;
   maximum?: number;
   exclusiveMaximum?: number;
   minimum?: number;
@@ -39,7 +42,7 @@ export interface SchemaObjectLike<T> extends JosieSchemaObject {
   pattern?: string;
   format?: string;
 
-  items?: SchemaLike<T> | NonEmptyArray<SchemaLike<T>>;
+  items?: SchemaLike<T> | SchemaLike<T>[];
   additionalItems?: SchemaLike<T>;
   maxItems?: number;
   minItems?: number;
@@ -62,12 +65,10 @@ export interface SchemaObjectLike<T> extends JosieSchemaObject {
   then?: SchemaLike<T>;
   else?: SchemaLike<T>;
 
-  allOf?: NonEmptyArray<SchemaLike<T>>;
-  anyOf?: NonEmptyArray<SchemaLike<T>>;
-  oneOf?: NonEmptyArray<SchemaLike<T>>;
+  allOf?: SchemaLike<T>[];
+  anyOf?: SchemaLike<T>[];
+  oneOf?: SchemaLike<T>[];
   not?: SchemaLike<T>;
 }
 
-export interface SchemaObjectRaw extends
-  SchemaObjectLike<SchemaRaw>,
-  JosieSchemaObject { }
+export interface SchemaObject extends SchemaObjectLike<Schema> { }

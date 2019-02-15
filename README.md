@@ -80,13 +80,14 @@ All keywords as of [JSON Schema Draft 7](http://json-schema.org/specification-li
 
 Custom Keywords (Type Only):
 ```ts
-declare global {
-  interface JosieSchemaObject {
+// augment module to define custom types
+declare module 'josie-builder' {
+  export interface SchemaCustomKeywords {
     customKeyword?: string;
   }
 }
 
-const schema: JosieBuilder.Schema = {
+const schema: josie.SchemaObject = {
   $id: '#foo',
   customKeyword: 'my-value'
 };
@@ -94,11 +95,9 @@ const schema: JosieBuilder.Schema = {
 
 Custom Static Methods:
 ```ts
-// define custom method type
-declare global {
-  interface JosieBuilderStatic {
-    email(): JosieBuilder;
-  }
+// augment module to define custom factory methods
+declare module 'josie-builder' {
+  export function email(): josie.Builder;
 }
 
 // define custom method
