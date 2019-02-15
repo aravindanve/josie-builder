@@ -36,7 +36,7 @@ declare class Builder {
   contains(value: Builder | common.SchemaLike<Builder>): Builder;
   maxProperties(value: number): Builder;
   minProperties(value: number): Builder;
-  required(value?): Builder;
+  required(value?: boolean): Builder;
   additionalProperties(value: Builder | common.SchemaLike<Builder>): Builder;
   properties(value: common.SchemaMap<Builder | common.SchemaLike<Builder>>): Builder;
   patternProperties(value: common.SchemaMap<Builder | common.SchemaLike<Builder>>): Builder;
