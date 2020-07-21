@@ -1,6 +1,6 @@
 {
   "name": "josie-builder",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "description": "JSON Schema Builder",
   "main": "lib/index.js",
   "types": "types/index.d.ts",
