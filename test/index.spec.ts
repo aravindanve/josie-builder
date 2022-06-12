@@ -1,6 +1,7 @@
 import 'mocha';
 import { expect } from 'chai';
 import * as josie from 'josie-builder';
+import Builder = require('../types/Builder');
 
 describe('josie()', () => {
   it('must be a function', () => {
@@ -77,7 +78,7 @@ describe('josie special methods', () => {
   });
 
   it('static compile() must throw if argument is not Builder', () => {
-    const schema = {};
+    const schema = {} as Builder;
     expect(() => josie[`compile${''}`](schema)).to.throw();
   });
 
@@ -91,7 +92,7 @@ describe('josie special methods', () => {
   });
 
   it('static clean() must throw if argument is not Builder', () => {
-    const schema = {};
+    const schema = {} as Builder;
     expect(() => josie[`clean${''}`](schema)).to.throw();
   });
 
